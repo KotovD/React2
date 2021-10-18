@@ -3,32 +3,33 @@ import React, { useState } from "react";
 import { Button, Header, Icon, Input, Modal } from "semantic-ui-react";
 import "./CreateButton.css";
 
-const CreateCustomer = ({ setLoading }) => {
+const CreateStore = ({ setLoading }) => {
+  
   const [open, setOpen] = useState(false)
 
-  const [customerName, setCustomerName] = useState("");
-  const [customerAddress, setCustomerAddress] = useState("");
+  const [storeName, setStoreName] = useState("");
+  const [storeAddress, setStoreAddress] = useState("");
 
-  const createCustomer = async (customerName, customerAddress) => {
+  const createStore = async (storeName, storeAddress) => {
     await axios({
       method: "post",
-      url: `Customers/PostCustomer`,
+      url: `Stores/PostStore`,
       data: {
-        name: customerName,
-        address: customerAddress
+        name: storeName,
+        address: storeAddress
       },
     });
     setLoading(true);
   };
 
-  const updateCustomerName = (change) => {
-    setCustomerName(change.target.value);
-    console.log(customerName);
+  const updateStoreName = (change) => {
+    setStoreName(change.target.value);
+    console.log(storeName);
   };
 
-  const updateCustomerAddress = (change) => {
-    setCustomerAddress(change.target.value);
-    console.log(customerAddress);
+  const updateStoreAddress = (change) => {
+    setStoreAddress(change.target.value);
+    console.log(storeAddress);
   };
 
  
@@ -39,7 +40,7 @@ const CreateCustomer = ({ setLoading }) => {
         color='blue'
         onClick={() => setOpen(true)}
       >
-        New Customer
+        New Store
       </Button>
 
       <Modal
@@ -48,13 +49,13 @@ const CreateCustomer = ({ setLoading }) => {
         onOpen={() => setOpen(true)}
         open={open}
       >
-        <Modal.Header>Create Customer</Modal.Header>
+        <Modal.Header>Create Store</Modal.Header>
 
         <Modal.Content>
           <Header as='h4'>NAME</Header>
-          <Input fluid placeholder='Name...' onChange={updateCustomerName} />
+          <Input fluid placeholder='Name...' onChange={updateStoreName} />
           <Header as='h4'>ADDRESS</Header>
-          <Input fluid placeholder='Address...' onChange={updateCustomerAddress} />
+          <Input fluid placeholder='Address...' onChange={updateStoreAddress} />
         </Modal.Content>
 
         <Modal.Actions>
@@ -66,7 +67,7 @@ const CreateCustomer = ({ setLoading }) => {
             positive
             icon labelPosition='right'
             onClick={() => {
-              createCustomer(customerName, customerAddress);
+                createStore(storeName, storeAddress);
               setOpen(false)
             }}
           >
@@ -81,4 +82,4 @@ const CreateCustomer = ({ setLoading }) => {
 }
 
 
-export default CreateCustomer;
+export default CreateStore;

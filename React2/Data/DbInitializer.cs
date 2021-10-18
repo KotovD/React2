@@ -47,9 +47,9 @@ namespace React2.Data
             var stores = new Store[]
             {
             new Store{Name="Countdown",Address="street 1"},
-            new Store{Name="New World",Address="street 2"},
-            new Store{Name="New World",Address="street 3"},
-            new Store{Name="Countdown",Address="street 4"},
+            new Store{Name="Pack and Save",Address="street 2"},
+            new Store{Name="4Square",Address="street 3"},
+            new Store{Name="Lotto",Address="street 4"},
             };
             foreach (Store s in stores)
             {
@@ -59,11 +59,11 @@ namespace React2.Data
 
             var sales = new Sale[]
             {
-            new Sale{ProductID=1,CustomerID=1,StoreID=1,DateSold=DateTime.Parse("2005-09-01")},
-            new Sale{ProductID=2,CustomerID=2,StoreID=1,DateSold=DateTime.Parse("2005-09-02")},
-            new Sale{ProductID=1,CustomerID=3,StoreID=2,DateSold=DateTime.Parse("2005-09-03")},
-            new Sale{ProductID=1,CustomerID=4,StoreID=2,DateSold=DateTime.Parse("2005-09-04")},
-            new Sale{ProductID=1,CustomerID=5,StoreID=2,DateSold=DateTime.Parse("2005-09-05")},
+            new Sale{ProductID=1,CustomerID=1,StoreID=1,DateSold= new DateTime(2021, 09, 01)},
+            new Sale{ProductID=2,CustomerID=2,StoreID=1,DateSold= new DateTime(2021, 09, 02)},
+            new Sale{ProductID=1,CustomerID=3,StoreID=2,DateSold= new DateTime(2021, 09 ,03)},
+            new Sale{ProductID=1,CustomerID=4,StoreID=2,DateSold= new DateTime(2021, 09, 04)},
+            new Sale{ProductID=1,CustomerID=5,StoreID=2,DateSold= new DateTime(2021, 09, 05)},
             };
             foreach (Sale s in sales)
             {

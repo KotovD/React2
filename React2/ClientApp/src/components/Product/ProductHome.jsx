@@ -1,68 +1,65 @@
 import axios from "axios";
-import ProductTable from "./ProductTable";
-import React, { Component } from "react";
+import { Table } from 'semantic-ui-react'
+import React, { useEffect, useState } from 'react'
+import "./table.css";
+
+import EditProduct from "./EditProduct"
+import DeleteProduct from "./DeleteProduct"
 import CreateProduct from "./CreateProduct";
 
-export class ProductHome extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      products: [],
-      loading: false,
-      openCreateProductModal: false,
+function ProductHome() {
+
+  const [data, setData] = useState([])
+  const [loading, setLoading] = useState(true)
+
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await axios.get("Products/GetProducts")
+      setData(result.data)
     };
-  }
-
-  componentDidMount() {
-    console.log("componentDidMount");
-    this.fetchProducts();
-  }
-
-  componentWillUnmount() {
-    console.log("componentWillUnmount");
-  }
-
-  fetchProducts = () => {
-    this.setState({
-      loading: true,
-    });
-    axios
-      .get("Products/GetProducts")
-      .then(({ data }) => {
-        console.log(data);
-        this.setState({
-          products: data,
-          loading: false,
-        });  
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
-  toggleCreateProductModal = (value) => {
-    this.setState({
-      openCreateProductModal: value
-    })
-   }
- 
-
-  render() {
-    const { products, loading, openCreateProductModal } = this.state;
-
     if (loading) {
-      return <div>Loading...</div>;
-    } else {
-      return (
-        <div>
-          <CreateProduct open={openCreateProductModal} fetchProducts={this.fetchProducts}/>
-          {/* <h1>Products</h1> */}
-          <ProductTable parent="ProductHome" products={products} fetchProducts={this.fetchProducts}/>
-          {/* <CustomerTable parent="CustomerHome" customers={customers} /> */}
-        </div>
-      );
+      fetchData();
+      setLoading(false)
     }
-  }
-}
+  }, [loading]);
 
-export default ProductHome;
+ 
+  return (
+    <div>
+      <CreateProduct setLoading={setLoading}/>
+      <div class="product-table">
+      <Table celled fixed singleLine>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell>Name</Table.HeaderCell>
+            <Table.HeaderCell>Price</Table.HeaderCell>
+            <Table.HeaderCell>Actions</Table.HeaderCell>
+            <Table.HeaderCell>Actions</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+
+        <Table.Body>
+          {data.map(product => {
+            return (
+              <Table.Row key={product.id}>
+                <Table.Cell>{product.name}</Table.Cell>
+                <Table.Cell>{product.price}</Table.Cell>
+                <Table.Cell>
+                  <EditProduct id={product.id} originalName={product.name} originalPrice={product.price} setLoading={setLoading} />
+                </Table.Cell>
+                <Table.Cell>
+                  <DeleteProduct id={product.id} name={product.name} price={product.price} setLoading={setLoading}/>
+                </Table.Cell>
+              </Table.Row>
+            )
+          })}
+
+        </Table.Body>
+      </Table>
+      </div>
+    </div>
+  )
+}
+export default ProductHome

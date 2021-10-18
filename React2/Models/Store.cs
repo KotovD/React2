@@ -7,7 +7,7 @@ namespace React2.Models
 {
     public class Store
     {
-        public int StoreID { get; set; }
+        public int ID { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
 

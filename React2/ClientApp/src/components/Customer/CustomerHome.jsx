@@ -1,11 +1,11 @@
 import axios from "axios";
-import { Table } from 'semantic-ui-react'
-// import CustomerTable from "./CustomerTable";
-import React, { useEffect, useState } from 'react'
+import { Table } from 'semantic-ui-react';
+import React, { useEffect, useState } from 'react';
+import "./table.css";
 
 import CreateCustomer from "./CreateCustomer";
-import EditCustomer from "./EditCustomer"
-import DeleteCustomer from "./DeleteCustomer"
+import EditCustomer from "./EditCustomer";
+import DeleteCustomer from "./DeleteCustomer";
 
 function CustomerHome() {
 
@@ -25,34 +25,11 @@ function CustomerHome() {
     }
   }, [loading]);
 
-  // fetchCustomers = () => {
-  //   this.setState({
-  //     loading: true,
-  //   });
-  //   axios
-  //     .get("Customers/GetCustomers")
-  //     .then(({ data }) => {
-  //       console.log(data);
-  //       this.setState({
-  //         customers: data,
-  //         loading: false,
-  //       });
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }
-
-  // toggleCreateCustomerModal = (value) => {
-  //  this.setState({
-  //   openCreateCustomerModal: value
-  //  })
-  // }
-
+ 
   return (
     <div>
       <CreateCustomer setLoading={setLoading}/>
-
+      <div class="customer-table">
       <Table celled fixed singleLine>
         <Table.Header>
           <Table.Row>
@@ -81,6 +58,7 @@ function CustomerHome() {
 
         </Table.Body>
       </Table>
+      </div>
     </div>
   )
 }

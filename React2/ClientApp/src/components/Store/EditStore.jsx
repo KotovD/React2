@@ -2,34 +2,34 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { Button, Header, Icon, Input, Modal } from 'semantic-ui-react'
 
-const EditCustomer = ({ originalName, originalAddress, setLoading, id }) => {
+const EditStore = ({ originalName, originalAddress, setLoading, id }) => {
   
-  const [customerName, setCustomerName] = useState(originalName)
-  const [customerAddress, setCustomerAddress] = useState(originalAddress)
+  const [storeName, setStoreName] = useState(originalName)
+  const [storeAddress, setStoreAddress] = useState(originalAddress)
 
   const [open, setOpen] = useState(false)
 
-  const editCustomer = async () => {
+  const editStore = async () => {
     await axios({
     method: "put",
-      url: 'Customers/PutCustomer/' + id,
+      url: 'Stores/PutStore/' + id,
       data: {
         id: id, 
-        name: customerName, 
-        address: customerAddress 
+        name: storeName, 
+        address: storeAddress 
       }
     })
     setLoading(true)
   }
 
-  const updateCustomerName = (change) => {
-    setCustomerName(change.target.value);
-    console.log(customerName);
+  const updateStoreName = (change) => {
+    setStoreName(change.target.value);
+    console.log(storeName);
   };
 
-  const updateCustomerAddress = (change) => {
-    setCustomerAddress(change.target.value);
-    console.log(customerAddress);
+  const updateStoreAddress = (change) => {
+    setStoreAddress(change.target.value);
+    console.log(storeAddress);
   };
   
   
@@ -49,13 +49,13 @@ const EditCustomer = ({ originalName, originalAddress, setLoading, id }) => {
         onOpen={() => setOpen(true)}
         open={open}
       >
-        <Modal.Header>Edit Customer</Modal.Header>
+        <Modal.Header>Edit Store</Modal.Header>
 
         <Modal.Content>
           <Header as='h4'>NAME</Header>
-          <Input fluid value={customerName} onChange={updateCustomerName}/>
+          <Input fluid value={storeName} onChange={updateStoreName}/>
           <Header as='h4'>ADDRESS</Header>
-          <Input fluid value={customerAddress} onChange={updateCustomerAddress}/>
+          <Input fluid value={storeAddress} onChange={updateStoreAddress}/>
         </Modal.Content>
 
         <Modal.Actions>
@@ -63,7 +63,7 @@ const EditCustomer = ({ originalName, originalAddress, setLoading, id }) => {
             No
           </Button>
           <Button positive onClick={() => {
-            editCustomer()
+            editStore()
             setOpen(false)
           }}
             icon labelPosition='right'
@@ -77,4 +77,4 @@ const EditCustomer = ({ originalName, originalAddress, setLoading, id }) => {
   )
 }
 
-export default EditCustomer
+export default EditStore

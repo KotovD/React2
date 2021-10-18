@@ -1,59 +1,65 @@
 import axios from "axios";
-import StoreTable from "./StoreTable";
-import React, { Component } from "react";
+import { Table } from 'semantic-ui-react';
+import React, { useEffect, useState } from 'react';
+import "./table.css";
 
-export class StoreHome extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      stores: [],
-      loading: false,
+import CreateStore from "./CreateStore";
+import EditStore from "./EditStore";
+import DeleteStore from "./DeleteStore";
+
+function StoreHome() {
+
+  const [data, setData] = useState([])
+  const [loading, setLoading] = useState(true)
+
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await axios.get("Stores/GetStores")
+      setData(result.data)
     };
-  }
-
-  componentDidMount() {
-    console.log("componentDidMount");
-    this.fetchStores();
-  }
-
-  componentWillUnmount() {
-    console.log("componentWillUnmount");
-  }
-
-  fetchStores() {
-    this.setState({
-      loading: true,
-    });
-    axios
-      .get("Stores/GetStores")
-      .then(({ data }) => {
-        console.log(data);
-        this.setState({
-          stores: data,
-          loading: false,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
-  render() {
-    const { stores, loading } = this.state;
-
     if (loading) {
-      return <div>Loading...</div>;
-    } else {
-      return (
-        <div>
-          <h1>Stores</h1>
-         < StoreTable parent="StoreHome" stores={stores}/>
-
-          {/* <CustomerTable parent="CustomerHome" customers={customers} /> */}
-        </div>
-      );
+      fetchData();
+      setLoading(false)
     }
-  }
-}
+  }, [loading]);
 
+
+  return (
+    <div>
+      <CreateStore setLoading={setLoading}/>
+      <div class="store-table">
+      <Table celled fixed singleLine>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell>Name</Table.HeaderCell>
+            <Table.HeaderCell>Address</Table.HeaderCell>
+            <Table.HeaderCell>Actions</Table.HeaderCell>
+            <Table.HeaderCell>Actions</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+
+        <Table.Body>
+          {data.map(store => {
+            return (
+              <Table.Row key={store.id}>
+                <Table.Cell>{store.name}</Table.Cell>
+                <Table.Cell>{store.address}</Table.Cell>
+                <Table.Cell>
+                  <EditStore id={store.id} originalName={store.name} originalAddress={store.address} setLoading={setLoading} />
+                </Table.Cell>
+                <Table.Cell>
+                  <DeleteStore id={store.id} name={store.name} address={store.address} setLoading={setLoading}/>
+                </Table.Cell>
+              </Table.Row>
+            )
+          })}
+
+        </Table.Body>
+      </Table>
+      </div>
+    </div>
+  )
+}
 export default StoreHome;

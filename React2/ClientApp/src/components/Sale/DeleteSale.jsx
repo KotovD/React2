@@ -2,16 +2,18 @@ import React, {useState} from "react";
 import axios from "axios";
 import { Button, Icon, Modal } from "semantic-ui-react";
 
-const DeleteCustomer = ({ id, name, address, setLoading }) => {
+const DeleteSale = ({ id, customerName, productName, storeName, dateSold, setLoading }) => {
   const [open, setOpen] = useState(false);
 
-  const deleteCustomer = async (id, name, address) => {
-    await axios.delete(`Customers/DeleteCustomer/${id}`, {
+  const deleteSale = async(id, customerName, productName, storeName, dateSold ) => {
+    await axios.delete(`Sales/DeleteSale/${id}`, {
       headers: {},
       data: {
-        Id: id,
-        Name: name,
-        Address: address,
+        SaleID: id,
+        CustomerID: customerName,
+        ProductID: productName,
+        StoreID: storeName,
+        DateSold: dateSold
       },
     });
     setLoading(true);
@@ -30,7 +32,7 @@ const DeleteCustomer = ({ id, name, address, setLoading }) => {
         onOpen={() => setOpen(true)}
         open={open}
       >
-        <Modal.Header>Delete Customer</Modal.Header>
+        <Modal.Header>Delete Sale</Modal.Header>
         <Modal.Content>
           <p>Are you sure you want to delete the record?</p>
         </Modal.Content>
@@ -41,7 +43,7 @@ const DeleteCustomer = ({ id, name, address, setLoading }) => {
           <Button
             color="red"
             onClick={() => {
-              deleteCustomer(id, name, address);
+                deleteSale(id, customerName, productName, storeName, dateSold );
               setOpen(false);
             }}
             icon
@@ -56,4 +58,4 @@ const DeleteCustomer = ({ id, name, address, setLoading }) => {
   );
 };
 
-export default DeleteCustomer;
+export default DeleteSale;

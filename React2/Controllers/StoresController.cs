@@ -48,7 +48,7 @@ namespace React2.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutStore(int id, Store store)
         {
-            if (id != store.StoreID)
+            if (id != store.ID)
             {
                 return BadRequest();
             }
@@ -83,7 +83,7 @@ namespace React2.Controllers
             _context.Stores.Add(store);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetStore", new { id = store.StoreID }, store);
+            return CreatedAtAction("GetStore", new { id = store.ID }, store);
         }
 
         // DELETE: api/Stores/5
@@ -104,7 +104,7 @@ namespace React2.Controllers
 
         private bool StoreExists(int id)
         {
-            return _context.Stores.Any(e => e.StoreID == id);
+            return _context.Stores.Any(e => e.ID == id);
         }
     }
 }

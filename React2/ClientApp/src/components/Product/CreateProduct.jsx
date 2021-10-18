@@ -1,104 +1,84 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
-import { Button, Form, Modal } from "semantic-ui-react";
-//import "./modal.css";
+import React, { useState } from "react";
+import { Button, Header, Icon, Input, Modal } from "semantic-ui-react";
+import "./CreateButton.css";
 
-const CreateProduct = (props) => {
-  const [open, setOpen] = React.useState(false);
-  const { fetchProducts } = props;
+const CreateProduct = ({ setLoading }) => {
+  const [open, setOpen] = React.useState(false)
 
-  const [productName, setProductName] = useState("");
-  const [productPrice, setProductPrice] = useState("");
+  const [productName, setproductName] = useState("");
+  const [productPrice, setproductPrice] = useState("");
 
-  const createProduct = () => {
-    axios
-      .post("Products/PostProduct", {
+  const createProduct = async (productName, productPrice) => {
+    await axios({
+      method: "post",
+      url: `Products/PostProduct`,
+      data: {
         name: productName,
-        price: productPrice,
-      })
-      .then(({ data }) => {
-        console.log(data);
-        fetchProducts();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+        price: productPrice
+      },
+    });
+    setLoading(true);
   };
 
-  const updateProductName = (value) => {
-    setProductName(value);
-  };
-
-  const updateProductPrice = (value) => {
-    setProductPrice(value);
-  };
-
-  useEffect(() => {
+  const updateProductName = (change) => {
+    setproductName(change.target.value);
     console.log(productName);
-    console.log(productPrice);
-    // works when:
-    // 1) Render
-    // 2) componentDidMount
-    return () => {
-      //works when:
-      // 1) componentWillUnmount
-    };
-  }, [productName, productPrice]);
-
-  const eventListener = () => {
-    createProduct();
-    setOpen(false);
   };
 
+  const updateProductPrice = (change) => {
+    setproductPrice(change.target.value);
+    console.log(productPrice);
+  };
+
+ 
   return (
-    <div class="modal">
+    <>
+    <div class="create-button">
+      <Button
+        color='blue'
+        onClick={() => setOpen(true)}
+      >
+        New Product
+      </Button>
+
       <Modal
-        open={open}
+        size='mini'
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
-        trigger={
-          <div class="modal-button">
-            <Button color="blue">Create Product </Button>
-          </div>
-        }
+        open={open}
       >
         <Modal.Header>Create Product</Modal.Header>
-        <Form>
-          <Form.Field>
-            <div class="modal-Form-Field">
-              <p2> Name</p2>
-            </div>
-            <div class="modal-Form-Field">
-              <input
-                placeholder="Name"
-                onChange={(e) => updateProductName(e.target.value)}
-              />
-            </div>
-          </Form.Field>
-          <Form.Field>
-            <div class="modal-Form-Field">
-              <p2>Price</p2>
-            </div>
-            <div class="modal-Form-Field">
-              <input
-                placeholder="Price"
-                onChange={(e) => updateProductPrice(e.target.value)}
-              />
-            </div>
-          </Form.Field>
-        </Form>
+
+        <Modal.Content>
+          <Header as='h4'>NAME</Header>
+          <Input fluid placeholder='Name...' onChange={updateProductName} />
+          <Header as='h4'>PRICE</Header>
+          <Input fluid placeholder='Address...' onChange={updateProductPrice} />
+        </Modal.Content>
 
         <Modal.Actions>
-          <Button color="green" onClick={eventListener}>
-            Create
-          </Button>
-          <Button color="black" onClick={() => setOpen(false)}>
+          <Button secondary onClick={() => setOpen(false)}>
             Cancel
+          </Button>
+
+          <Button
+            positive
+            icon labelPosition='right'
+            onClick={() => {
+              createProduct(productName, productPrice);
+              setOpen(false)
+            }}
+          >
+            Create
+            <Icon name='check' />
           </Button>
         </Modal.Actions>
       </Modal>
-    </div>
-  );
-};
+      </div>
+    </>
+  )
+}
+
 
 export default CreateProduct;
