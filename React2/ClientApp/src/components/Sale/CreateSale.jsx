@@ -19,6 +19,9 @@ const CreateSale = ({ setLoading, customers, products, stores, originalId }) => 
   const productOptions = [];
   const storeOptions = [];
 
+  const DateFormat = require('fast-date-format');
+  const dateFormat = new DateFormat('DD/MM/YYYY');
+
   const createData = () => {
     customers.map(x => customerOptions.push({ key: x.name, text: x.name, value: x.id }))
     products.map(x => productOptions.push({ key: x.name, text: x.name, value: x.id }))
@@ -40,7 +43,7 @@ const CreateSale = ({ setLoading, customers, products, stores, originalId }) => 
 
     const newSaleByID = {
       SaleID: originalId,
-      DateSold: date,
+      DateSold: dateFormat.format(new Date(date)), // ISSUE HERE dateFormat.format(new Date(date))
       CustomerId: customerId,
       ProductId: productId,
       StoreId: storeId
@@ -84,7 +87,7 @@ const CreateSale = ({ setLoading, customers, products, stores, originalId }) => 
 
         <Modal.Content>
           <Header as='h4'>DATE SOLD</Header>
-          <Input fluid placeholder='Date sole...'  type='date' value={date} onChange={onChangeDate} />
+          <Input fluid placeholder='Date sole...'value={date} onChange={onChangeDate} />
 
           <Header as='h4'>CUSTOMER</Header>
           <Dropdown

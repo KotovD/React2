@@ -1,6 +1,8 @@
 import axios from "axios";
 import { Table } from "semantic-ui-react";
 import React, { useEffect, useState } from "react";
+// import  {DateTime}  from "react-intl-datetime-format";
+
 
 import "./table.css";
 
@@ -15,6 +17,9 @@ function SaleHome() {
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const DateFormat = require('fast-date-format');
+  const dateFormat = new DateFormat('DD/MM/YYYY');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -70,7 +75,7 @@ function SaleHome() {
               <Table.HeaderCell>Customer</Table.HeaderCell>
               <Table.HeaderCell>Product</Table.HeaderCell>
               <Table.HeaderCell>Store</Table.HeaderCell>
-              <Table.HeaderCell>Date Sold</Table.HeaderCell>
+              <Table.HeaderCell>Date Sold </Table.HeaderCell>
               <Table.HeaderCell>Actions</Table.HeaderCell>
               <Table.HeaderCell>Actions</Table.HeaderCell>
             </Table.Row>
@@ -84,11 +89,13 @@ function SaleHome() {
                   <Table.Cell>{sale.customer.name}</Table.Cell>
                   <Table.Cell>{sale.product.name}</Table.Cell>
                   <Table.Cell>{sale.store.name}</Table.Cell>
-                  <Table.Cell>{sale.dateSold}</Table.Cell>
+                  <Table.Cell>
+                    {dateFormat.format(new Date(sale.dateSold))}
+                  </Table.Cell>
                   <Table.Cell>
                     <EditSale
                       id={sale.saleID}
-                      datesSold={sale.dateSold}
+                      datesSold= {dateFormat.format(new Date(sale.dateSold))}
                       customers={customers}
                       products={products}
                       stores={stores}

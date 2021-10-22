@@ -59,11 +59,11 @@ namespace React2.Data
 
             var sales = new Sale[]
             {
-            new Sale{ProductID=1,CustomerID=1,StoreID=1,DateSold= new DateTime(2021, 09, 01)},
-            new Sale{ProductID=2,CustomerID=2,StoreID=1,DateSold= new DateTime(2021, 09, 02)},
-            new Sale{ProductID=1,CustomerID=3,StoreID=2,DateSold= new DateTime(2021, 09 ,03)},
-            new Sale{ProductID=1,CustomerID=4,StoreID=2,DateSold= new DateTime(2021, 09, 04)},
-            new Sale{ProductID=1,CustomerID=5,StoreID=2,DateSold= new DateTime(2021, 09, 05)},
+            new Sale{ProductID=1,CustomerID=1,StoreID=1,DateSold= DateTime.Parse("2021-09-10")},
+            new Sale{ProductID=2,CustomerID=2,StoreID=1,DateSold= DateTime.Parse("2021-09-11")},
+            new Sale{ProductID=1,CustomerID=3,StoreID=2,DateSold= DateTime.Parse("2021-09-12")},
+            new Sale{ProductID=1,CustomerID=4,StoreID=2,DateSold= DateTime.Parse("2021-09-13")},
+            new Sale{ProductID=1,CustomerID=5,StoreID=2,DateSold= DateTime.Parse("2021-09-14")}
             };
             foreach (Sale s in sales)
             {

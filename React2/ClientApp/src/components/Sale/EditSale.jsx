@@ -14,24 +14,68 @@ const EditSale = ({
   const [open, setOpen] = useState(false);
 
   const [dateSold, setDate] = useState("");
+
   const [customerId, setCustomerId] = useState("");
   const [productId, setProductId] = useState("");
   const [storeId, setStoreId] = useState("");
 
-  const customerOptions = []; //keep these outside so its scope can be reachable below
-  const productOptions = [];
-  const storeOptions = [];
+  // const customerOptions = []; //keep these outside so its scope can be reachable below
+  // const productOptions = [];
+  // const storeOptions = [];
 
-  const createData = () => {
-    customers.map((x) =>
-      customerOptions.push({ key: x.name, text: x.name, value: x.id })
-    );
-    products.map((x) =>
-      productOptions.push({ key: x.name, text: x.name, value: x.id })
-    );
-    stores.map((x) =>
-      storeOptions.push({ key: x.name, text: x.name, value: x.id })
-    );
+  const DateFormat = require("fast-date-format");
+  const dateFormat = new DateFormat("DD/MM/YYYY");
+
+  // const createData = () => {
+  //   customers.map((x) =>
+  //     customerOptions.push({ key: x.id, text: x.name, value: x.id })
+  //   );
+  //   products.map((x) =>
+  //     productOptions.push({ key: x.id, text: x.name, value: x.id })
+  //   );
+  //   stores.map((x) =>
+  //     storeOptions.push({ key: x.id, text: x.name, value: x.id })
+  //   );
+  // };
+
+  const customerOptions = customers.map((x) => ({
+    value: x.id,
+    key: x.name,
+    text: x.name,
+  }));
+
+  const productOptions = products.map((x) => ({
+    value: x.id,
+    key: x.name,
+    text: x.name,
+  }));
+
+  const storeOptions = stores.map((x) => ({
+    value: x.id,
+    key: x.name,
+    text: x.name,
+  }));
+
+  const resetState = () => {
+    setDate("");
+    setStoreId("");
+    setProductId("");
+    setCustomerId("");
+  };
+
+  const updateCustomerId = (event, result) => {
+    const { id, value } = result || event.target;
+    setCustomerId({ ...customerId, [id]:value});
+  };
+
+  const updateProductId = (event, result) => {
+    const { id, value } = result || event.target;
+    setProductId({ ...productId, [id]:value});
+  };
+
+  const updateStoreId = (event, result) => {
+    const { id, value } = result || event.target;
+    setStoreId({ ...storeId, [id]:value});
   };
 
   // const trigger = (
@@ -41,35 +85,28 @@ const EditSale = ({
   // )
 
   const editSale = async () => {
+
+    const newSaleByID = {
+      SaleID: id,
+      DateSold: dateFormat.format(new Date(dateSold)), // ISSUE HERE dateFormat.format(new Date(date))
+      CustomerId: customerId,
+      ProductId: productId,
+      StoreId: storeId,
+    };
+    // console.log(newSaleByID);
     await axios({
       method: "put",
-      url: "Sales/PutSale/" + id,
-      data: {
-        saleID: id,
-        customerID: customerId,
-        productID: productId,
-        storeID: storeId,
-        dateSold: dateSold,
-      },
+      url: 'Sales/PutSale/' + id,
+      data: newSaleByID,
     });
     setLoading(true);
-  };
-
-  const updateCustomerId = (change) => {
-    setCustomerId(change.target.value);
-  };
-
-  const updateProductId = (change) => {
-    setProductId(change.target.value);
-  };
-
-  const updateStoreId = (change) => {
-    setStoreId(change.target.value);
+    // console.log("----->", customerId);
   };
 
   return (
     <>
-      {createData()}
+      {/* {console.log("------>", customerId)} */}
+      {/* {createData()} */}
       <Button color="yellow" onClick={() => setOpen(true)}>
         <Icon name="edit outline" />
         Edit Sale
@@ -86,7 +123,7 @@ const EditSale = ({
         <Modal.Content>
           <Header as="h4">DATE SOLD</Header>
           <Input
-           // type='date'
+            // type='date'
             fluid
             placeholder="Date sold..."
             value={datesSold}
@@ -95,33 +132,36 @@ const EditSale = ({
 
           <Header as="h4">CUSTOMER</Header>
           <Dropdown
-            text={customerOptions[customerId]}
+            //text={customerOptions[customerId]}
             // trigger={trigger}
+            // name="customerName"
             fluid
             selection
             options={customerOptions}
-            value={customerId}
-            onChange={updateCustomerId}
+            value={customers.value}
+            onChange={(event, data) => updateCustomerId(event, data)}
           />
 
           <Header as="h4">PRODUCT</Header>
           <Dropdown
-            placeholder="Select Product"
+            //placeholder="Select Product"
+            // name="productName"
             fluid
             selection
             options={productOptions}
-            value={productOptions[productId]}
-            onChange={updateProductId}
+            value={products.value}
+            onChange={(event, data) => updateProductId(event, data)}
           />
 
           <Header as="h4">STORE</Header>
           <Dropdown
             placeholder="Select Store"
+            // name="storeName"
             fluid
             selection
             options={storeOptions}
-            value={storeOptions[storeId]}
-            onChange={updateStoreId}
+            value={stores.value}
+            onChange={(event, data) => updateStoreId(event, data)}
           />
         </Modal.Content>
 
