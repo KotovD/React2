@@ -19,9 +19,6 @@ const CreateSale = ({ setLoading, customers, products, stores, originalId }) => 
   const productOptions = [];
   const storeOptions = [];
 
-  const DateFormat = require('fast-date-format');
-  const dateFormat = new DateFormat('DD/MM/YYYY');
-
   const createData = () => {
     customers.map(x => customerOptions.push({ key: x.name, text: x.name, value: x.id }))
     products.map(x => productOptions.push({ key: x.name, text: x.name, value: x.id }))
@@ -42,33 +39,33 @@ const CreateSale = ({ setLoading, customers, products, stores, originalId }) => 
   const createSale = async () => {
 
     const newSaleByID = {
-      SaleID: originalId,
-      DateSold: dateFormat.format(new Date(date)), // ISSUE HERE dateFormat.format(new Date(date))
-      CustomerId: customerId,
-      ProductId: productId,
-      StoreId: storeId
+      saleId: originalId,
+      dateSold: date, // ISSUE HERE dateFormat.format(new Date(date))
+      customerId: customerId,
+      productId: productId,
+      storeId: storeId
     }
-    console.log(newSaleByID);
+    console.log(originalId);
     if (
-      newSaleByID.DateSold === "" ||
-      newSaleByID.CustomerId === "" ||
-      newSaleByID.ProductId === "" ||
-      newSaleByID.StoreId === ""
+      newSaleByID.dateSold === "" ||
+      newSaleByID.customerId === "" ||
+      newSaleByID.productId === "" ||
+      newSaleByID.storeId === ""
     ) {
       alert("Creating Sale unsuccessfully. Please fill up all the fields.")
     } else {
       await axios({
         method: "post",
-        url: 'Sales/PostSale',
+        url:"Sales/PostSale",
         data: newSaleByID
       })
       setLoading(true)
     }
-    resetState()
   }
   
   return (
     <>
+    <div class="create-button">
       {createData()}
       <Button
         color='blue'
@@ -79,7 +76,10 @@ const CreateSale = ({ setLoading, customers, products, stores, originalId }) => 
 
       <Modal
         size='mini'
-        onClose={() => setOpen(false)}
+        onClose={() => {
+          setOpen(false);
+          resetState();
+        }}
         onOpen={() => setOpen(true)}
         open={open}
       >
@@ -128,7 +128,10 @@ const CreateSale = ({ setLoading, customers, products, stores, originalId }) => 
         </Modal.Content>
 
         <Modal.Actions>
-          <Button secondary onClick={() => setOpen(false)}> {/*  onClick={() => dispatch({ type: 'close' })} */}
+          <Button secondary onClick={() => {
+          setOpen(false);
+          resetState();
+        }}> 
             Cancel
           </Button>
 
@@ -145,6 +148,7 @@ const CreateSale = ({ setLoading, customers, products, stores, originalId }) => 
           </Button>
         </Modal.Actions>
       </Modal>
+      </div>
     </>
   )
 }

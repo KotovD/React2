@@ -1,8 +1,6 @@
 import axios from "axios";
 import { Table } from "semantic-ui-react";
 import React, { useEffect, useState } from "react";
-// import  {DateTime}  from "react-intl-datetime-format";
-
 
 import "./table.css";
 
@@ -18,46 +16,26 @@ function SaleHome() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const DateFormat = require('fast-date-format');
-  const dateFormat = new DateFormat('DD/MM/YYYY');
+  const DateFormat = require("fast-date-format");
+  const dateFormat = new DateFormat("DD/MM/YYYY");
 
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios.get("Sales/GetSales");
-      setData(result.data);
-
-      const resultCusotmers = await axios.get("Customers/GetCustomers");
-      setCustomers(resultCusotmers.data);
-
+      const resultCustomers = await axios.get("Customers/GetCustomers");
       const resultProducts = await axios.get("Products/GetProducts");
-      setProducts(resultProducts.data);
-
       const resultStores = await axios.get("Stores/GetStores");
+
+      setData(result.data);
+      setCustomers(resultCustomers.data);
+      setProducts(resultProducts.data);
       setStores(resultStores.data);
     };
+
     if (loading) {
-      fetchData();
+      fetchData();      
       setLoading(false);
     }
-    // const fetchCustomer = async () => {
-    //       const result = await axios.get("Customers/GetCustomers")
-    //       setCustomers(result.data)
-    //     };
-    //     fetchCustomer();
-
-    //fetch products
-    // const fetchProduct = async () => {
-    //   const result = await axios.get("Products/GetProducts");
-    //   setProducts(result.data);
-    // };
-    // fetchProduct();
-
-    //fetch stores
-    // const fetchStore = async () => {
-    //   const result = await axios.get("Stores/GetStores");
-    //   setStores(result.data);
-    // };
-    // fetchStore();
   }, [loading]);
 
   return (
@@ -83,7 +61,7 @@ function SaleHome() {
 
           <Table.Body>
             {data.map((sale) => {
-              console.log(sale);
+              //console.log(sale.customer.name);
               return (
                 <Table.Row key={sale.saleID}>
                   <Table.Cell>{sale.customer.name}</Table.Cell>
@@ -95,7 +73,7 @@ function SaleHome() {
                   <Table.Cell>
                     <EditSale
                       id={sale.saleID}
-                      datesSold= {dateFormat.format(new Date(sale.dateSold))}
+                      originalDate={dateFormat.format(new Date(sale.dateSold))}
                       customers={customers}
                       products={products}
                       stores={stores}

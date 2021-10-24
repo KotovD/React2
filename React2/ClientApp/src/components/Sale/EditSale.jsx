@@ -8,105 +8,63 @@ const EditSale = ({
   customers,
   products,
   stores,
-  datesSold,
+  originalDate,
   id,
 }) => {
   const [open, setOpen] = useState(false);
 
-  const [dateSold, setDate] = useState("");
+  const [dateSold, setDate] = useState(originalDate);
 
   const [customerId, setCustomerId] = useState("");
   const [productId, setProductId] = useState("");
   const [storeId, setStoreId] = useState("");
 
-  // const customerOptions = []; //keep these outside so its scope can be reachable below
-  // const productOptions = [];
-  // const storeOptions = [];
+  const customerOptions = []; //keep these outside so its scope can be reachable below
+  const productOptions = [];
+  const storeOptions = [];
 
-  const DateFormat = require("fast-date-format");
-  const dateFormat = new DateFormat("DD/MM/YYYY");
+  const createData = () => {
+    customers.map((x) =>
+      customerOptions.push({ key: x.id, text: x.name, value: x.id })
+    );
+    products.map((x) =>
+      productOptions.push({ key: x.id, text: x.name, value: x.id })
+    );
+    stores.map((x) =>
+      storeOptions.push({ key: x.id, text: x.name, value: x.id })
+    );
+  };
 
-  // const createData = () => {
-  //   customers.map((x) =>
-  //     customerOptions.push({ key: x.id, text: x.name, value: x.id })
-  //   );
-  //   products.map((x) =>
-  //     productOptions.push({ key: x.id, text: x.name, value: x.id })
-  //   );
-  //   stores.map((x) =>
-  //     storeOptions.push({ key: x.id, text: x.name, value: x.id })
-  //   );
-  // };
-
-  const customerOptions = customers.map((x) => ({
-    value: x.id,
-    key: x.name,
-    text: x.name,
-  }));
-
-  const productOptions = products.map((x) => ({
-    value: x.id,
-    key: x.name,
-    text: x.name,
-  }));
-
-  const storeOptions = stores.map((x) => ({
-    value: x.id,
-    key: x.name,
-    text: x.name,
-  }));
+  const updateDate = (event) => {
+    setDate(event.target.value);
+  };
 
   const resetState = () => {
-    setDate("");
-    setStoreId("");
-    setProductId("");
+    setDate(dateSold);
     setCustomerId("");
+    setProductId("");
+    setStoreId("");
   };
-
-  const updateCustomerId = (event, result) => {
-    const { id, value } = result || event.target;
-    setCustomerId({ ...customerId, [id]:value});
-  };
-
-  const updateProductId = (event, result) => {
-    const { id, value } = result || event.target;
-    setProductId({ ...productId, [id]:value});
-  };
-
-  const updateStoreId = (event, result) => {
-    const { id, value } = result || event.target;
-    setStoreId({ ...storeId, [id]:value});
-  };
-
-  // const trigger = (
-  //   <span>
-  //     <Icon name='customers'/> {customerOptions}
-  //   </span>
-  // )
 
   const editSale = async () => {
-
     const newSaleByID = {
-      SaleID: id,
-      DateSold: dateFormat.format(new Date(dateSold)), // ISSUE HERE dateFormat.format(new Date(date))
-      CustomerId: customerId,
-      ProductId: productId,
-      StoreId: storeId,
+      saleId: id,
+      dateSold: dateSold,
+      customerId: customerId,
+      productId: productId,
+      storeId: storeId,
     };
-    // console.log(newSaleByID);
     await axios({
       method: "put",
-      url: 'Sales/PutSale/' + id,
+      url: "Sales/PutSale/" + id,
       data: newSaleByID,
     });
     setLoading(true);
-    // console.log("----->", customerId);
   };
 
   return (
     <>
-      {/* {console.log("------>", customerId)} */}
-      {/* {createData()} */}
+      {createData()}
       <Button color="yellow" onClick={() => setOpen(true)}>
         <Icon name="edit outline" />
         Edit Sale
@@ -114,7 +72,10 @@ const EditSale = ({
 
       <Modal
         size="mini"
-        onClose={() => setOpen(false)}
+        onClose={() => {
+          setOpen(false);
+          resetState();
+        }}
         onOpen={() => setOpen(true)}
         open={open}
       >
@@ -123,34 +84,33 @@ const EditSale = ({
         <Modal.Content>
           <Header as="h4">DATE SOLD</Header>
           <Input
-            // type='date'
-            fluid
-            placeholder="Date sold..."
-            value={datesSold}
-            onChange={setDate}
+            value={dateSold}
+            onChange={updateDate}
           />
 
           <Header as="h4">CUSTOMER</Header>
           <Dropdown
-            //text={customerOptions[customerId]}
-            // trigger={trigger}
-            // name="customerName"
+            placeholder
             fluid
             selection
             options={customerOptions}
-            value={customers.value}
-            onChange={(event, data) => updateCustomerId(event, data)}
+            value={customerId}
+            onChange={(event, event2) => {
+              setCustomerId(event2.value);
+            }}
           />
 
           <Header as="h4">PRODUCT</Header>
           <Dropdown
-            //placeholder="Select Product"
-            // name="productName"
+            placeholder
+            //name={productId}
             fluid
             selection
             options={productOptions}
-            value={products.value}
-            onChange={(event, data) => updateProductId(event, data)}
+            value={productId}
+            onChange={(event, event2) => {
+              setProductId(event2.value);
+            }}
           />
 
           <Header as="h4">STORE</Header>
@@ -160,13 +120,18 @@ const EditSale = ({
             fluid
             selection
             options={storeOptions}
-            value={stores.value}
-            onChange={(event, data) => updateStoreId(event, data)}
+            value={storeId}
+            onChange={(event, event2) => {
+              setStoreId(event2.value);
+            }}
           />
         </Modal.Content>
 
         <Modal.Actions>
-          <Button secondary onClick={() => setOpen(false)}>
+          <Button secondary onClick={() => {
+          setOpen(false);
+          resetState();
+        }}>
             Cancel
           </Button>
 
