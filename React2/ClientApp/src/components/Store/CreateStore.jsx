@@ -35,7 +35,7 @@ const CreateStore = ({ setLoading }) => {
  
   return (
     <>
-    <div class="create-button">
+    <div className="create-button">
       <Button
         color='blue'
         onClick={() => setOpen(true)}

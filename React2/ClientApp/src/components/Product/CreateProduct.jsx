@@ -34,7 +34,7 @@ const CreateProduct = ({ setLoading }) => {
  
   return (
     <>
-    <div class="create-button">
+    <div className="create-button">
       <Button
         color='blue'
         onClick={() => setOpen(true)}
@@ -54,7 +54,7 @@ const CreateProduct = ({ setLoading }) => {
           <Header as='h4'>NAME</Header>
           <Input fluid placeholder='Name...' onChange={updateProductName} />
           <Header as='h4'>PRICE</Header>
-          <Input fluid placeholder='Address...' onChange={updateProductPrice} />
+          <Input fluid placeholder='Price...' onChange={updateProductPrice} />
         </Modal.Content>
 
         <Modal.Actions>

@@ -56,7 +56,7 @@ const EditProduct = ({ originalName, originalPrice, setLoading, id }) => {
           <Header as='h4'>NAME</Header>
           <Input fluid value={productName} onChange={updateProductName}/>
           <Header as='h4'>PRICE</Header>
-          <Input fluid value={productPrice} onChange={updateProductPRice}/>
+          <Input fluid value={'$' + productPrice.toFixed(2)} onChange={updateProductPRice}/>
         </Modal.Content>
 
         <Modal.Actions>

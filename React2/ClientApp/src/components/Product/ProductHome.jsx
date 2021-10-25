@@ -29,7 +29,7 @@ function ProductHome() {
   return (
     <div>
       <CreateProduct setLoading={setLoading}/>
-      <div class="product-table">
+      <div className="product-table">
       <Table celled fixed singleLine>
         <Table.Header>
           <Table.Row>
@@ -45,7 +45,7 @@ function ProductHome() {
             return (
               <Table.Row key={product.id}>
                 <Table.Cell>{product.name}</Table.Cell>
-                <Table.Cell>{product.price}</Table.Cell>
+                <Table.Cell>{'$' + product.price.toFixed(2)}</Table.Cell>
                 <Table.Cell>
                   <EditProduct id={product.id} originalName={product.name} originalPrice={product.price} setLoading={setLoading} />
                 </Table.Cell>

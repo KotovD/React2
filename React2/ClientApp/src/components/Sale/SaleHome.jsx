@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Table } from "semantic-ui-react";
+import { Table, Pagination } from "semantic-ui-react";
 import React, { useEffect, useState } from "react";
 
 import "./table.css";
@@ -16,6 +16,15 @@ function SaleHome() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const [displayData, setDisplayData] = useState([]);
+  let pages;
+  const setNumberOfPages = () => {
+    pages = Math.floor(data.length / 5);
+    if (data.length % 5 > 0) {
+      pages++;
+    }
+  };
+
   const DateFormat = require("fast-date-format");
   const dateFormat = new DateFormat("DD/MM/YYYY");
 
@@ -30,16 +39,19 @@ function SaleHome() {
       setCustomers(resultCustomers.data);
       setProducts(resultProducts.data);
       setStores(resultStores.data);
+      setDisplayData(result.data.slice(0, 5));
     };
 
     if (loading) {
-      fetchData();      
+      fetchData();
       setLoading(false);
     }
   }, [loading]);
 
   return (
     <div>
+      {setNumberOfPages()}
+
       <CreateSale
         setLoading={setLoading}
         customers={customers}
@@ -60,8 +72,8 @@ function SaleHome() {
           </Table.Header>
 
           <Table.Body>
-            {data.map((sale) => {
-              //console.log(sale.customer.name);
+            {displayData.map((sale) => {
+              //console.log(customers);
               return (
                 <Table.Row key={sale.saleID}>
                   <Table.Cell>{sale.customer.name}</Table.Cell>
@@ -96,6 +108,20 @@ function SaleHome() {
             })}
           </Table.Body>
         </Table>
+        <Pagination
+          boundaryRange={0}
+          defaultActivePage={1}
+          ellipsisItem={null}
+          firstItem={null}
+          lastItem={null}
+          siblingRange={1}
+          onPageChange={(event, event2) => {
+            setDisplayData(
+              data.slice((event2.activePage - 1) * 5, event2.activePage * 5)
+            );
+          }}
+          totalPages={pages}
+        />
       </div>
     </div>
   );

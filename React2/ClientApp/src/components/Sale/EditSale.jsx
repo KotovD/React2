@@ -35,6 +35,12 @@ const EditSale = ({
     );
   };
 
+  // const trigger = (
+  //   <span>
+  //      {createData()}
+  //   </span>
+  // )
+
   const updateDate = (event) => {
     setDate(event.target.value);
   };
@@ -90,11 +96,14 @@ const EditSale = ({
 
           <Header as="h4">CUSTOMER</Header>
           <Dropdown
-            placeholder
+            //placeholder={customerOptions[0].text}
+            //trigger={trigger}
+            
             fluid
             selection
-            options={customerOptions}
             value={customerId}
+            options={customerOptions}
+            
             onChange={(event, event2) => {
               setCustomerId(event2.value);
             }}

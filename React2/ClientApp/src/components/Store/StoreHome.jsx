@@ -29,7 +29,7 @@ function StoreHome() {
   return (
     <div>
       <CreateStore setLoading={setLoading}/>
-      <div class="store-table">
+      <div className="store-table">
       <Table celled fixed singleLine>
         <Table.Header>
           <Table.Row>

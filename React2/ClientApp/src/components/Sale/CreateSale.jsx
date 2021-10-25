@@ -65,7 +65,7 @@ const CreateSale = ({ setLoading, customers, products, stores, originalId }) => 
   
   return (
     <>
-    <div class="create-button">
+    <div className="create-button">
       {createData()}
       <Button
         color='blue'
