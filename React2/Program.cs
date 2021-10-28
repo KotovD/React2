@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using React2.Data;
 using Microsoft.Extensions.DependencyInjection;
+using Azure.Identity;
 
 namespace React2
 {
@@ -42,6 +43,11 @@ namespace React2
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+.ConfigureAppConfiguration((context, config) =>
+{
+var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("VaultUri"));
+config.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
+})
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
