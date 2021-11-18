@@ -6,9 +6,9 @@
       "secretStore": "LocalSecretsFile"
     },
     "secrets1": {
-      "resourceId": null,
-      "type": "secrets.user",
-      "connectionId": null,
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.KeyVault/vaults/React2MvpOnBoarding",
+      "type": "secrets.keyVault",
+      "connectionId": "VaultUri",
       "secretStore": null
     }
   }
