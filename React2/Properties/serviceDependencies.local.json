@@ -1,15 +1,19 @@
 {
   "dependencies": {
-    "mssql1": {
-      "type": "mssql.onprem",
-      "connectionId": "ConnectionStrings:DefaultConnection",
-      "secretStore": "LocalSecretsFile"
-    },
     "secrets1": {
       "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.KeyVault/vaults/React2MvpOnBoarding",
       "type": "secrets.keyVault",
       "connectionId": "VaultUri",
       "secretStore": null
+    },
+    "secrets2": {
+      "type": "secrets.user"
+    },
+    "mssql1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/react2-1dbserver/databases/React2-1_db",
+      "type": "mssql.azure",
+      "connectionId": "react2-1dbserver.database.windows.net",
+      "secretStore": "LocalSecretsFile"
     }
   }
 }

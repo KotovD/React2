@@ -1,12 +1,21 @@
 {
   "dependencies": {
-    "mssql1": {
-      "type": "mssql",
-      "connectionId": "ConnectionStrings:DefaultConnection"
-    },
     "secrets1": {
       "type": "secrets",
       "connectionId": "VaultUri"
+    },
+    "mssql2": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:DefaultConnection",
+      "suggestion": "true",
+      "ignored": "true"
+    },
+    "secrets2": {
+      "type": "secrets"
+    },
+    "mssql1": {
+      "type": "mssql",
+      "connectionId": "react2-1dbserver.database.windows.net"
     }
   }
 }
