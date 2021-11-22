@@ -6,7 +6,8 @@ export class Home extends Component {
   render () {
     return (
       <div>
-        <h1>First App With React</h1>
+            <h1>First App With React</h1>
+            <p>22/11/2021 Update: Project is under maintenance. Migrating SQL sever to Azure</p>
         <p> built by Dmitrii Kotov with:</p>
         <ul>
           <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>
